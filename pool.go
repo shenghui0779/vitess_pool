@@ -142,7 +142,7 @@ func (rp *ResourcePool) IsClosed() (closed bool) {
 	return rp.capacity.Get() == 0
 }
 
-// closeIdleResources scans the pool for idle resources
+// closeIdleResources scans the pool for idle resources.
 func (rp *ResourcePool) closeIdleResources() {
 	available := int(rp.Available())
 	idleTimeout := rp.IdleTimeout()
@@ -153,7 +153,7 @@ func (rp *ResourcePool) closeIdleResources() {
 		select {
 		case wrapper = <-rp.resources:
 		default:
-			// stop early if we don't get anything new from the pool
+			// stop early if we don't get anything new from the pool.
 			return
 		}
 
@@ -273,8 +273,7 @@ func (rp *ResourcePool) SetCapacity(capacity int) error {
 		return fmt.Errorf("capacity %d is out of range", capacity)
 	}
 
-	// Atomically swap new capacity with old, but only
-	// if old capacity is non-zero.
+	// Atomically swap new capacity with old, but only if old capacity is non-zero.
 	var oldcap int
 
 	for {
@@ -360,8 +359,7 @@ func (rp *ResourcePool) Available() int64 {
 	return rp.available.Get()
 }
 
-// Active returns the number of active (i.e. non-nil) resources either in the
-// pool or claimed for use
+// Active returns the number of active (i.e. non-nil) resources either in the pool or claimed for use
 func (rp *ResourcePool) Active() int64 {
 	return rp.active.Get()
 }
