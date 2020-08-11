@@ -19,7 +19,7 @@ Timer provides timer functionality that can be controlled
 by the user. You start the timer by providing it a callback function,
 which it will call at the specified interval.
 
-	var t = timer.NewTimer(1e9)
+	var t = NewTimer(1e9)
 	t.Start(KeepHouse)
 
 	func KeepHouse() {

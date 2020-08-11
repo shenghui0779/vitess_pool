@@ -31,7 +31,7 @@ func (i *AtomicInt64) Get() int64 {
 }
 
 // CompareAndSwap automatically swaps the old with the new value.
-func (i *AtomicInt64) CompareAndSwap(oldval, newval int64) (swapped bool) {
+func (i *AtomicInt64) CompareAndSwap(oldval, newval int64) bool {
 	return atomic.CompareAndSwapInt64(&i.int64, oldval, newval)
 }
 
@@ -61,6 +61,6 @@ func (d *AtomicDuration) Get() time.Duration {
 }
 
 // CompareAndSwap automatically swaps the old with the new value.
-func (d *AtomicDuration) CompareAndSwap(oldval, newval time.Duration) (swapped bool) {
+func (d *AtomicDuration) CompareAndSwap(oldval, newval time.Duration) bool {
 	return atomic.CompareAndSwapInt64(&d.int64, int64(oldval), int64(newval))
 }
