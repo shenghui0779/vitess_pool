@@ -15,7 +15,7 @@ var (
 	// ErrTimeout is returned if a resource get times out.
 	ErrTimeout = errors.New("resource pool timed out")
 
-	// ErrCtxTimeout is returned if a ctx is already expired by the time the resource pool is used
+	// ErrCtxTimeout is returned if a ctx is already expired by the time the resource pool is used.
 	ErrCtxTimeout = errors.New("resource pool context already expired")
 
 	prefillTimeout = 30 * time.Second
@@ -25,8 +25,7 @@ var (
 type Factory func() (Resource, error)
 
 // Resource defines the interface that every resource must provide.
-// Thread synchronization between Close() and IsClosed()
-// is the responsibility of the caller.
+// Thread synchronization between Close() and IsClosed() is the responsibility of the caller.
 type Resource interface {
 	Close()
 }
@@ -172,8 +171,8 @@ func (rp *ResourcePool) closeIdleResources() {
 	}
 }
 
-// Get will return the next available resource. If capacity
-// has not been reached, it will create a new one using the factory. Otherwise,
+// Get will return the next available resource.
+// If capacity has not been reached, it will create a new one using the factory. Otherwise,
 // it will wait till the next resource becomes available or a timeout.
 // A timeout of 0 is an indefinite wait.
 func (rp *ResourcePool) Get(ctx context.Context) (resource Resource, err error) {
@@ -228,9 +227,9 @@ func (rp *ResourcePool) Get(ctx context.Context) (resource Resource, err error) 
 	return wrapper.resource, err
 }
 
-// Put will return a resource to the pool. For every successful Get,
-// a corresponding Put is required. If you no longer need a resource,
-// you will need to call Put(nil) instead of returning the closed resource.
+// Put will return a resource to the pool.
+// For every successful Get, a corresponding Put is required.
+// If you no longer need a resource, you will need to call Put(nil) instead of returning the closed resource.
 // This will cause a new resource to be created in its place.
 func (rp *ResourcePool) Put(resource Resource) {
 	var wrapper resourceWrapper
@@ -266,10 +265,8 @@ func (rp *ResourcePool) reopenResource(wrapper *resourceWrapper) {
 }
 
 // SetCapacity changes the capacity of the pool.
-// You can use it to shrink or expand, but not beyond
-// the max capacity. If the change requires the pool
-// to be shrunk, SetCapacity waits till the necessary
-// number of resources are returned to the pool.
+// You can use it to shrink or expand, but not beyond the max capacity.
+// If the change requires the pool to be shrunk, SetCapacity waits till the necessary number of resources are returned to the pool.
 // A SetCapacity of 0 is equivalent to closing the ResourcePool.
 func (rp *ResourcePool) SetCapacity(capacity int) error {
 	if capacity < 0 || capacity > cap(rp.resources) {
@@ -326,8 +323,8 @@ func (rp *ResourcePool) recordWait(start time.Time) {
 	rp.waitTime.Add(time.Since(start))
 }
 
-// SetIdleTimeout sets the idle timeout. It can only be used if there was an
-// idle timeout set when the pool was created.
+// SetIdleTimeout sets the idle timeout.
+// It can only be used if there was an idle timeout set when the pool was created.
 func (rp *ResourcePool) SetIdleTimeout(idleTimeout time.Duration) {
 	if rp.idleTimer == nil {
 		panic("SetIdleTimeout called when timer not initialized")
