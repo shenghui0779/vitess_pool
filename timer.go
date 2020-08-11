@@ -3,8 +3,6 @@ package vitess_pool
 import (
 	"sync"
 	"time"
-
-	"vitess.io/vitess/go/sync2"
 )
 
 // Out-of-band messages
@@ -39,7 +37,7 @@ A zero value interval will cause the timer to wait indefinitely, and it
 will react only to an explicit Trigger or Stop.
 */
 type Timer struct {
-	interval sync2.AtomicDuration
+	interval AtomicDuration
 
 	// state management
 	mu      sync.Mutex
